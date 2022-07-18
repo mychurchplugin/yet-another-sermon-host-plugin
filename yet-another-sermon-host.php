@@ -28,6 +28,7 @@ register_deactivation_hook( __FILE__, 'yash_plugin_deactivation' );
 
 // Uninstall
 
+
 /**
  * Included files
  */
@@ -35,18 +36,13 @@ register_deactivation_hook( __FILE__, 'yash_plugin_deactivation' );
 function yash_style_enqueue() {
     $plugin_url = plugin_dir_url( __FILE__ );
 
-    wp_enqueue_style( 'style',  $plugin_url . "/style.css");
-    wp_enqueue_style( 'style', '//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css');
-    wp_enqueue_style( 'style', '//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css');
-
-//     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
-// <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    wp_enqueue_style( 'style',  $plugin_url . "includes/style.css");
 }
 
 add_action( 'admin_print_styles', 'yash_style_enqueue' );
 
 /**
- * Register the Sermons menu page.
+ * Add the Sermons menu page.
  */
 function yash_add_admin_page(){
     add_menu_page( 
@@ -58,17 +54,6 @@ function yash_add_admin_page(){
         'dashicons-media-audio',
         2
     );
-
-    add_submenu_page( 
-        'yet-another-sermon-host.php', //$parent_slug
-        'Settings', //$page_title
-        'Settings', //$menu_title
-        'manage_options', //$capability
-        'settings', //$menu_slug
-        'yash_settings_page', //$callback
-        null //$position
-    );
-
 }
 add_action( 'admin_menu', 'yash_add_admin_page' );
  
@@ -76,44 +61,16 @@ add_action( 'admin_menu', 'yash_add_admin_page' );
  * Display Sermons page content
  */
 function yash_admin_page(){
-    esc_html_e( '', 'textdomain' );
-    
-    // Builds the content
+   // Builds the content
     function yash_admin_content(){
         $plugin_url = plugin_dir_url( __FILE__ );
         
-        include('yash_admin_content.php') ;
+        include('includes/yash_admin_content.php') ;
     }
 
     // Call and display the content
     yash_admin_content();
 }
-
-/**
- * Display Settings page content
- */
-function yash_settings_page(){
-    esc_html_e( '', 'textdomain' );
-    
-    // Builds the content
-    function yash_admin_content(){
-        echo '<div><h1>Yet Another Sermon Host Plugin Settings</h1></div>';
-        echo '<form>
-                <input type="text"></input>
-                <input type="submit" value="Update"></input>
-            </form>';
-        echo ( test() );
-    }
-
-    function test(){
-        echo '<div style="color:green;">test successful</div>';
-    }
-
-    // Call and display the content
-    yash_admin_content();
-}
-
-
 
 /**
  * Shortcodes
@@ -135,6 +92,3 @@ function yash_sermon_page(){
     <script src="https://yetanothersermon.host/js/embed.js" defer data-id="yash-embed-sermons"></script>';
 }
 add_shortcode( 'sermon_page', 'yash_sermon_page' );
-
-
-
